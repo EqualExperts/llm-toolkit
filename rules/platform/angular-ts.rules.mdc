@@ -1,0 +1,227 @@
+# Angular + TypeScript Frontend Rules
+
+Concise, practical rules for building maintainable, performant, and accessible Angular apps with modern TypeScript and Angular features.
+
+## Context
+
+Guidance for day-to-day Angular component, template, service, and state design using the latest standalone APIs and signals.
+
+*Applies to:* Angular applications and libraries (v16+), SPA/MPA frontends, design systems
+*Level:* Operational/Tactical
+*Audience:* Frontend engineers, tech leads, reviewers
+
+## Core Principles
+
+1. **Type safety by default:** Enable strict typing, prefer inference, and avoid unsafe escape hatches.
+2. **Idiomatic modern Angular:** Prefer standalone APIs, signals, native control flow, and `inject()`.
+3. **Simplicity and SRP:** Keep components/services small, focused, and predictable.
+4. **Performance-first UI:** OnPush change detection, reactive patterns, and lazy loading by default.
+
+## Rules
+
+### Must Have (Critical)
+Non-negotiable rules that must always be followed. Violation of these rules should block progress.
+
+- **RULE-001:** Use strict TypeScript; avoid `any` and prefer `unknown` when type is uncertain; use type inference when obvious.
+- **RULE-002:** Use standalone components; do NOT set `standalone: true` in Angular decorators (it's the default).
+- **RULE-003:** Use signals for component/local state; use `set`/`update` only; do NOT use `mutate`.
+- **RULE-004:** Use `computed()` for derived state.
+- **RULE-005:** Use `input()` and `output()` functions instead of decorators.
+- **RULE-006:** Set `changeDetection: ChangeDetectionStrategy.OnPush` on all components.
+- **RULE-007:** Use native template control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`.
+- **RULE-008:** Do NOT use `@HostBinding` or `@HostListener`; define host bindings/listeners in the `host` property of `@Component`/`@Directive`.
+- **RULE-009:** Do NOT use `ngClass`/`ngStyle`; use `class` and `style` bindings instead.
+- **RULE-010:** Prefer Reactive Forms over Template-driven Forms for new code.
+- **RULE-011:** Use `inject()` for dependency injection in services and where appropriate.
+- **RULE-012:** Use `providedIn: 'root'` for singleton services.
+- **RULE-013:** Implement lazy loading for feature routes.
+- **RULE-014:** Use `NgOptimizedImage` for static images; do NOT use it for inline base64 images.
+- **RULE-015:** Keep components and services single-responsibility and small.
+- **RULE-016:** In template control flow, do not use `as` expressions in `@else if (...)`; refactor to compute values beforehand.
+
+### Should Have (Important)
+Strong recommendations that should be followed unless there's a compelling reason not to.
+
+- **RULE-101:** Prefer inline templates for small components; use separate files for complex markup.
+- **RULE-102:** Keep templates simple; move complex logic to TypeScript.
+- **RULE-103:** Keep state transformations pure and predictable.
+- **RULE-104:** Use the `async` pipe to handle Observables in templates; avoid manual `subscribe()` for rendering.
+- **RULE-105:** Design services around a single responsibility; avoid god-services.
+
+### Could Have (Preferred)
+Best practices and preferences that improve quality but are not blocking.
+
+- **RULE-201:** Favor explicit `readonly` and immutable patterns where it clarifies intent.
+- **RULE-202:** Co-locate small, leaf components with their feature; promote only when reused.
+- **RULE-203:** Document public component inputs/outputs with concise JSDoc for design system surfaces.
+
+## Patterns & Anti-Patterns
+
+### ✅ Do This
+Concrete examples of what good implementation looks like
+
+```typescript
+// Component with signals, computed state, OnPush, host bindings, native control flow, and class/style bindings
+import { Component, ChangeDetectionStrategy, input, output, signal, computed } from '@angular/core';
+
+@Component({
+  selector: 'app-counter',
+  // no `standalone: true` (default)
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'counter',
+    '(click)': 'onClick()'
+  },
+  template: `
+    @if (count() > 0) {
+      <span class="badge" [class.is-large]="isLarge()">{{ label() }}: {{ count() }}</span>
+    } @else {
+      <span class="badge is-empty">Empty</span>
+    }
+    <button type="button" (click)="inc()">Inc</button>
+  `
+})
+export class CounterComponent {
+  readonly label = input<string>('Count');
+  readonly changed = output<number>();
+
+  private readonly size = input<'sm' | 'lg'>('sm');
+  readonly count = signal(0);
+  readonly isLarge = computed(() => this.size() === 'lg');
+
+  inc() {
+    this.count.update(c => c + 1);
+    this.changed.emit(this.count());
+  }
+
+  onClick() {
+    // handle host click via host listener in metadata
+  }
+}
+```
+
+```html
+<!-- Template using async pipe and native control flow -->
+<div>
+  @if (user$ | async; as user) {
+    <h3>{{ user.name }}</h3>
+  } @else {
+    <app-skeleton></app-skeleton>
+  }
+</div>
+```
+
+### ❌ Don't Do This
+Concrete examples of what to avoid
+
+```typescript
+// Anti-patterns: decorators for IO, HostBinding/HostListener, mutate(), star control flow, ngClass/ngStyle
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, HostBinding, HostListener, signal } from '@angular/core';
+
+@Component({
+  selector: 'app-bad',
+  standalone: true, // ❌ don't set; it's default
+  changeDetection: ChangeDetectionStrategy.Default, // ❌ should be OnPush
+  template: `
+    <div *ngIf="count() > 0" [ngClass]="{ 'is-large': large }" [ngStyle]="{ color: color }">
+      {{ label }}: {{ count() }}
+    </div>
+  `
+})
+export class BadComponent {
+  @Input() label!: string; // ❌ use input()
+  @Output() changed = new EventEmitter<number>(); // ❌ use output()
+
+  @HostBinding('class.bad') bad = true; // ❌ use host metadata
+  @HostListener('click') onClick() {} // ❌ use host metadata
+
+  color = 'red';
+  large = false;
+  count = signal(0);
+
+  inc() {
+    this.count.mutate(c => { c++; }); // ❌ don't use mutate
+    this.changed.emit(this.count());
+  }
+}
+```
+
+```html
+<!-- Invalid control flow pitfall -->
+@if (getUser() as user) {
+  <div>{{ user.name }}</div>
+} @else if (getAccount() as account) { <!-- ❌ invalid: as in @else if -->
+  <div>{{ account.id }}</div>
+}
+```
+
+```typescript
+// Avoid manual subscribe for template rendering
+userService.user$.subscribe(u => this.user = u); // ❌ prefer async pipe
+```
+
+## Decision Framework
+
+*When rules conflict:*
+1. Favor type safety, correctness, and accessibility over convenience.
+2. Prefer modern Angular primitives (standalone, signals, `inject()`, native control flow) over legacy patterns.
+3. Choose the simplest solution that satisfies SRP and performance (OnPush, lazy loading).
+
+*When facing edge cases:*
+- Legacy or third-party constraints: wrap/adapter pattern; isolate exceptions locally.
+- Dynamic styling/events: prefer explicit `class`/`style` bindings and `host` metadata; avoid `ngClass`/`ngStyle` and decorators.
+- Template complexity: extract components/pipes or move logic to TS until templates are declarative.
+
+## Exceptions & Waivers
+
+*Valid reasons for exceptions:*
+- Interoperating with legacy modules/libraries that require deprecated patterns.
+- Temporary migration windows while incrementally adopting signals/standalone APIs.
+- Performance or security constraints that necessitate an alternative approach with measurements.
+
+*Process for exceptions:*
+1. Document the exception, rationale, and scope in an ADR or README.
+2. Obtain tech lead approval.
+3. Time-box the exception and add a cleanup task.
+
+## Quality Gates
+
+- **Automated checks:** TS `strict` enabled; ESLint rules for Angular best practices; template parser rules to flag `*ngIf/*ngFor`, `@HostBinding/@HostListener`, `ngClass/ngStyle` usage; CI check for OnPush and use of `input()/output()` and `inject()` patterns.
+- **Code review focus:** Standalone usage (no explicit `standalone: true`), signals and computed correctness, OnPush, host metadata vs decorators, native control flow, DI via `inject()`, Reactive Forms, lazy-loaded routes, NgOptimizedImage usage, async pipe usage.
+- **Testing requirements:** Unit tests around computed state; component change detection with OnPush; service DI via `inject()`; route lazy loading verified via router configuration tests; template tests validating async pipe rendering.
+
+## Related Rules
+
+- rules/platform/typescript.instructions.md - Complementary TypeScript guidance
+- rules/code-quality.mdc - Actionable review comments
+- rules/clean-code.mdc - General maintainability practices
+
+## References
+
+- [Angular Signals](https://angular.dev/guide/signals) - Modern reactive state management
+- [Standalone APIs](https://angular.dev/guide/standalone-components) - Simplified component architecture
+- [Control Flow](https://angular.dev/guide/template-control-flow) - Native template control structures
+- [Dependency Injection and inject()](https://angular.dev/guide/di) - Modern DI patterns
+- [Reactive Forms](https://angular.dev/guide/forms) - Type-safe form handling
+- [Host Bindings/Listeners](https://angular.dev/guide/directives#host-listeners-and-host-bindings) - Component host interactions
+- [NgOptimizedImage](https://angular.dev/guide/image-directive) - Performance-optimized images
+- [Async Pipe](https://angular.dev/api/common/AsyncPipe) - Observable template integration
+
+---
+
+## TL;DR
+
+Build with strict typing, modern Angular primitives, and simple, SRP-aligned components.
+
+*Key Principles:*
+- Type-safe by default; prefer inference.
+- Use standalone, signals, `inject()`, and native control flow.
+- Keep things small, predictable, and OnPush.
+
+*Critical Rules:*
+- Don't set `standalone: true`; use signals with `set`/`update` and `computed()`; use `input()`/`output()`; OnPush; no `@HostBinding/@HostListener`, no `ngClass/ngStyle`.
+- Use native `@if/@for/@switch`, Reactive Forms, `inject()`, `providedIn: 'root'`, lazy routes, and the `async` pipe for Observables.
+- Use `NgOptimizedImage` for static images; not for inline base64; avoid `as` in `@else if`.
+
+*Quick Decision Guide:*
+When unsure, choose the modern Angular primitive that keeps templates declarative and components small; optimize for OnPush and type safety.
