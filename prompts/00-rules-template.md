@@ -11,6 +11,7 @@ When using this template to generate rules, follow these guidelines:
 7. **Make it scannable** - Use formatting (bold, lists, code blocks) to enable quick comprehension
 8. **Keep examples brief** - Code examples should be minimal yet illustrative
 9. **Ensure TL;DR is truly concise** - The TL;DR should capture the essence in under 30 seconds of reading
+10. **Location** - The generated rule should be placed in the `rules/` directory of this project with a name reflecting its intent
 
 ---
 
