@@ -1,3 +1,19 @@
+# Instructions for LLM Rule Generation
+
+When using this template to generate rules, follow these guidelines:
+
+1. **Strictly follow the template structure** - Use the sections provided below as your framework
+2. **Omit irrelevant sections** - If a section doesn't apply (e.g., Patterns & Anti-Patterns for non-code topics), remove it entirely
+3. **Be concise** - Keep the total output under 200 lines to preserve context window efficiency
+4. **Prioritize clarity** - Use clear, actionable language. Avoid ambiguity
+5. **Number rules consistently** - Use the RULE-XXX format with appropriate ranges (001-099 for Must Have, 101-199 for Should Have, 201-299 for Could Have)
+6. **Focus on the essential** - Capture the core principles and critical rules first, then add supporting details only if space permits
+7. **Make it scannable** - Use formatting (bold, lists, code blocks) to enable quick comprehension
+8. **Keep examples brief** - Code examples should be minimal yet illustrative
+9. **Ensure TL;DR is truly concise** - The TL;DR should capture the essence in under 30 seconds of reading
+
+---
+
 # [Rules Topic/Domain Name]
 
 Brief description of the rules domain and its scope. What aspect of development, architecture, or methodology do these rules govern? Keep this concise and focused on the purpose and boundaries of these rules.
