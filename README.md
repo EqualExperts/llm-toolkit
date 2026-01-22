@@ -1,17 +1,17 @@
 # Overview
 
-A collection of rules that MAY be useful for your LLM projects.
+A collection of rules and commands that MAY be useful for your LLM projects.
 
 - Be opinionated
 - Be brief
 - Be specific
 - Break down rules and prompts so as to avoid adding unnecessary context
 
-# Rules
+## Rules
 
 Like [Awesome Cursor rules](https://github.com/PatrickJS/awesome-cursorrules), except some level of curation and review
 
-# Contributing New Rules
+### Contributing New Rules
 
 To contribute new rules:
 
@@ -22,11 +22,11 @@ To contribute new rules:
 
 2. Submit a pull request with your new rule. All PRs require review from at least one code owner.
 
-# Using as a Git Submodule
+### Using as a Git Submodule
 
 To add this library to your existing project with prompts, you can include it as a git submodule. This creates a `library` subdirectory within your `prompts` folder containing all the rules and templates.
 
-## Setup
+### Setup
 
 1. Navigate to your project's `prompts` directory:
    ```bash
@@ -61,7 +61,7 @@ git add library
 git commit -m "Update llm-rules library"
 ```
 
-## Structure
+### Structure
 
 After setup, your prompts directory will look something like:
 
@@ -82,6 +82,43 @@ prompts/
         └── 00-todo_template.md
 ```
 
-# Prompts
+## Commands
 
-Prompt templates and snippets
+Two interactive commands are provided to help with work item management:
+
+- **/clarify**: Transform vague ideas into well-defined, actionable work items with clear scope and acceptance criteria
+- **/breakdown**: Decompose large work items into smaller, manageable pieces using proven decomposition strategies
+
+### Installation
+
+**Claude Code**:
+
+Create symbolic links to install both commands in your Claude Code environment:
+
+```bash
+ln -s "$(pwd)/commands/clarify.md" ~/.claude/commands/
+ln -s "$(pwd)/commands/breakdown.md" ~/.claude/commands/
+```
+
+Or install from a submodule:
+
+```bash
+ln -s "$(pwd)/prompts/library/commands/clarify.md" ~/.claude/commands/
+ln -s "$(pwd)/prompts/library/commands/breakdown.md" ~/.claude/commands/
+```
+
+**Gemini CLI**:
+
+Create symbolic links to install both commands in your Gemini CLI environment:
+
+```bash
+ln -s "$(pwd)/commands/clarify.toml" ~/.gemini/commands/
+ln -s "$(pwd)/commands/breakdown.toml" ~/.gemini/commands/
+```
+
+Or install from a submodule:
+
+```bash
+ln -s "$(pwd)/prompts/library/commands/clarify.toml" ~/.gemini/commands/
+ln -s "$(pwd)/prompts/library/commands/breakdown.toml" ~/.gemini/commands/
+```
