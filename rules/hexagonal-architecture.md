@@ -1,11 +1,4 @@
----
-description: Guidelines for implementing Hexagonal (Ports and Adapters) Architecture to isolate domain logic from external concerns
-globs:
-alwaysApply: false
----
 # Hexagonal Architecture (Ports and Adapters)
-
-*Cursor rules file – guidelines for implementing the Hexagonal Architecture pattern in Kotlin services.*
 
 > **Intent**
 > Create a system architecture that **isolates the domain core** from external concerns.
@@ -325,4 +318,3 @@ class MongoVersionRepositorySpec : ShouldSpec({
 6. Map between **domain-specific** and **external** data models at the boundaries.
 7. Test each component in **isolation** using the appropriate strategy.
 
-Place this file with your other Cursor rules to guide AI-generated code toward a clean hexagonal architecture.

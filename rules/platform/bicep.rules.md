@@ -35,7 +35,7 @@ Strong recommendations to improve clarity and usefulness.
 - RULE-103: Deduplicate similar issues; if multiple rules trigger on the same line, emit a single combined message.
 
 ### Could Have (Preferred)
-Helpful preferences that aren’t blocking.
+Helpful preferences that aren't blocking.
 
 - RULE-201: When multiple candidate issues tie, prefer earlier lines and higher-severity categories (e.g., security > reliability > performance > style).
 - RULE-202: Keep output format consistent and machine-readable for downstream tooling.
@@ -99,7 +99,7 @@ Concrete examples to avoid.
 
 ## Related Rules
 
-- rules/code-quality.mdc - General guidance for actionable, minimal review comments
+- rules/code-quality.md - General guidance for actionable, minimal review comments
 - rules/platform/dotnet.instructions.md - Example platform-specific instruction style
 
 ## References

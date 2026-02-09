@@ -1,8 +1,3 @@
----
-description: Code Quality Guidelines
-globs: *.cs
-alwaysApply: true
----
 # Code Quality Guidelines
 
 ## Verify Information

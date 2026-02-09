@@ -1,9 +1,3 @@
----
-description: Guidelines for creating and maintaining LikeC4 architecture models and diagrams. Apply these rules when working with LikeC4 projects to ensure consistency, clarity, and maintainability.
-globs:
-alwaysApply: false
----
-
 # LikeC4 Architecture Modeling Rules
 
 Guidelines for creating effective, maintainable, and self-documenting LikeC4 architecture models that serve as reliable sources of truth for system documentation.
@@ -55,7 +49,7 @@ domain marketing {
   #DOMAIN_MARKETING
   title 'Marketing Domain'
   description 'Marketing domain covers direct to customer interactions'
-  
+
   api customer-preference {
     #DEPRECATED #LINE_OF_BUSINESS
     title 'Customer Marketing Preference'
@@ -66,8 +60,8 @@ domain marketing {
       slack '#team-marketing | https://slack.com/ABC/DEF'
       email 'team@example.com'
     }
-    
-    customer-preference .uses salesforce.cloud {             
+
+    customer-preference .uses salesforce.cloud {
       description 'Uses Salesforce to store marketing preferences'
     }
   }
@@ -83,7 +77,7 @@ domain mkt {
     title 'API'
     description 'does stuff'
     technology 'python'
-    
+
     custPref .uses salesforce
   }
 }
@@ -121,9 +115,9 @@ domain mkt {
 
 ## Related Rules
 
-- rules/domain-driven-design.mdc - Alignment with domain boundaries and ubiquitous language
-- rules/clean-code.mdc - Naming conventions and documentation standards
-- rules/hexagonal-architecture.mdc - Architectural layer definitions and dependencies
+- rules/domain-driven-design.md - Alignment with domain boundaries and ubiquitous language
+- rules/clean-code.md - Naming conventions and documentation standards
+- rules/hexagonal-architecture.md - Architectural layer definitions and dependencies
 
 ## References
 

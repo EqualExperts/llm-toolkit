@@ -1,11 +1,4 @@
----
-description: Language-agnostic Domain-Driven Design principles for modelling complex systems with explicit boundaries
-globs:
-alwaysApply: false
----
 # Domain Driven Design Principles
-
-*Cursor rules file – language-agnostic DDD guidelines for complex software systems.*
 
 > **Intent**
 > Establish a **common language** between developers and domain experts.

@@ -193,8 +193,8 @@ userService.user$.subscribe(u => this.user = u); // ❌ prefer async pipe
 ## Related Rules
 
 - rules/platform/typescript.instructions.md - Complementary TypeScript guidance
-- rules/code-quality.mdc - Actionable review comments
-- rules/clean-code.mdc - General maintainability practices
+- rules/code-quality.md - Actionable review comments
+- rules/clean-code.md - General maintainability practices
 
 ## References
 

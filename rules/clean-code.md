@@ -1,8 +1,3 @@
----
-description: Comprehensive guide to Robert C. Martin's Clean Code principles for writing maintainable, readable code that expresses intent clearly
-globs:
-alwaysApply: false
----
 # Clean Code Principles
 
 A comprehensive guide to writing clean, maintainable, and readable code based on Robert C. Martin's "Clean Code" principles. These rules focus on creating code that clearly expresses intent, is easy to understand, modify, and maintain over time.
@@ -12,7 +7,7 @@ A comprehensive guide to writing clean, maintainable, and readable code based on
 Provide guidelines for writing code that prioritizes readability, simplicity, and maintainability over cleverness or optimization.
 
 *Applies to:* All software development projects, code reviews, refactoring efforts
-*Level:* Tactical/Operational - direct application in daily coding practices  
+*Level:* Tactical/Operational - direct application in daily coding practices
 *Audience:* All developers, from junior to senior levels
 
 ## Core Principles
@@ -57,7 +52,7 @@ Provide guidelines for writing code that prioritizes readability, simplicity, an
 function calculateMonthlyPayment(principal, interestRate, termInYears) {
     const monthlyRate = interestRate / 12;
     const numberOfPayments = termInYears * 12;
-    
+
     return (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -numberOfPayments));
 }
 

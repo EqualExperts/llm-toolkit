@@ -9,7 +9,7 @@ A collection of rules and commands that MAY be useful for your LLM projects.
 
 ## Rules
 
-Like [Awesome Cursor rules](https://github.com/PatrickJS/awesome-cursorrules), except some level of curation and review
+A curated collection of rules for LLM-assisted development. Rules are expressed as plain Markdown (`.md`) files to remain tool-agnostic and work across different AI coding assistants.
 
 ### Contributing New Rules
 

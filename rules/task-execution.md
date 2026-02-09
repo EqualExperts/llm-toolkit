@@ -1,9 +1,3 @@
----
-description:
-globs:
-alwaysApply: false
----
-
 # TODO Execution Rules
 
 ## Workflow for Executing TODO Items
