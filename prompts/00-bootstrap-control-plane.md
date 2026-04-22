@@ -20,6 +20,8 @@ Then say:
 
 The assistant will ask you about your project, help you make architectural decisions, and produce the documents that form your control plane. At the end, it replaces this bootstrap file with a real CLAUDE.md tailored to your system.
 
+**Run this bootstrap on a frontier reasoning model with a decent thinking budget** — e.g. Claude Opus with extended thinking enabled. This is an architecture conversation, and the quality of the control plane compounds across every future conversation that loads it. Don't economise here.
+
 ---
 
 # Bootstrap Mode
@@ -89,6 +91,17 @@ Work through these decisions together. For each one, explain the trade-offs brie
 - Logging approach
 - Code style (or defer to an existing standard/linter config)
 
+### Agent and model selection
+The control plane itself is an artefact that benefits from strong reasoning — architecture, trade-off analysis, cross-cutting refactors, design review. Establish a default policy the team can rely on:
+
+- **Default: Opus (or the equivalent frontier reasoning model) with a decent thinking budget** for any conversation that touches the control plane — architecture changes, convention edits, ADRs, cross-package refactors, ambiguous problem-solving, and code review.
+- **Defer to Sonnet (or an equivalent mid-tier model)** when the task plays to its strengths: well-scoped implementation against a clear spec, high-throughput iteration, routine edits, test writing against defined behaviour, mechanical migrations, and tight interactive loops where latency matters.
+- **Use Haiku / smaller models sparingly** — only for genuinely narrow, repetitive work (e.g. bulk string substitutions, trivial file renames).
+
+The principle: match the model to the difficulty of the reasoning, not the size of the diff. A one-line change to a core abstraction is still an Opus task. A 500-line mechanical refactor can be a Sonnet task.
+
+Ask the developer if they want to adopt this as the default policy, adjust it, or opt out. Record the outcome — it belongs in CLAUDE.md so every future conversation inherits it.
+
 Don't force decisions they're not ready to make. Record "TBD" for anything that can wait. The control plane can be updated later.
 
 ## Phase 3: Produce the documents
@@ -104,6 +117,7 @@ The system context. Under 200 lines. Must include:
 - List of child projects/packages with one-line descriptions
 - Link to conventions doc
 - Build/test/run commands (even if they're just `make build`, `make test`)
+- **Agent/model policy** — a short section stating which model is the default for this project and when to defer to a lighter one (see Phase 2). Example wording: "Default to Opus with extended thinking for architecture, design review, and cross-cutting changes. Defer to Sonnet for well-scoped implementation, test writing, and routine edits."
 
 ### 2. docs/conventions.md
 
